@@ -1,5 +1,7 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" xmlns:th="http://thymeleaf.org">
+<html lang="en" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:sec="http://thymeleaf.org/extras/spring-security5"
+      xmlns:th="http://thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
@@ -11,19 +13,30 @@
 
         <div class="container-fluid">
             <div class="navbar-header">
-                <a class="navbar-brand" href="#">Site</a>
+                <a class="navbar-brand" href="#">Mon site demo-niaque</a>
             </div>
         </div>
         <ul class="nav nav-pills">
             <li>
                 <a class="nav-link" th:href="@{/index}">Accueil</a>
             </li>
+            <li sec:authorize="hasRole('ROLE_ADMIN')">
+                <a class="nav-link" th:href="@{/article}">Ajouter un article</a>
+            </li>
             <li>
-                <a class="nav-link" th:href="@{/article}">Article</a>
+                <a class="nav-link" th:href="@{/cart}">Panier</a>
             </li>
         </ul>
 
+        <ul class="nav navbar-nav pull-right">
+            <li>
+                <a class="btn btn-default" th:href="@{/logout}">
+                    Déconnexion
+                </a>
+            </li>
+        </ul>
     </nav>
+
 
 
 </div>

@@ -1,5 +1,7 @@
 <!DOCTYPE html>
-<html lang="en" layout:decorate="~{layout.html}" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+<html lang="en" layout:decorate="~{layout.html}"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:sec="http://thymeleaf.org/extras/spring-security5"
       xmlns:th="http://thymeleaf.org">
 <head>
     <meta charset="UTF-8">
@@ -17,14 +19,18 @@
             </li>
         </ul>
     </nav>
+    <div class="badge text-bg-danger" th:text="${categoriesNotFound}"></div>
+    <div class="badge text-bg-danger" th:text="${notDeleted}"></div>
     <div class="container border border-primary  rounded mt-4">
         <div class="p-3 mb-2 bg-primary text-white w-100">
             Liste des articles
         </div>
+        <div class="badge  text-bg-secondary" th:text="${successDeleted}"></div>
+        <div class="badge text-bg-danger" th:text="${articlesNotFound}"></div>
         <div>
             <form method="get" th:action="@{/index}">
-                <label>Rechercher </label>
-                <input name="keyword" th:value="${keyword}" type="text">
+                <label>Rechercher : </label>
+                <input name="keyword" placeholder="Description" th:value="${keyword}" type="text">
                 <button class="btn btn-primary" type="submit">Rechercher</button>
             </form>
         </div>
@@ -46,14 +52,18 @@
                     <td th:text="${a.description}"></td>
                     <td th:text="${a.price}"></td>
                     <td th:text="${a.category.name}"></td>
-                    <td>
+                    <td sec:authorize="hasRole('ROLE_ADMIN')">
                         <a class="btn btn-danger"
-                           th:href="@{/delete(id=${a.id}, page=${currentPage}, keyword=${keyword})}">Delete</a>
+                           th:href="@{/delete(id=${a.id}, page=${currentPage}, keyword=${keyword})}">Supprimer</a>
 
                     </td>
-                    <td>
+                    <td sec:authorize="hasRole('ROLE_ADMIN')">
                         <a class="btn btn-primary"
                            th:href="@{/article(id=${a.id})}">Editer</a>
+                    </td>
+                    <td>
+                        <a class="btn btn-success"
+                           th:href="@{/addToCart(id=${a.id})}">Ajouter au Panier</a>
                     </td>
                 </tr>
                 </tbody>
